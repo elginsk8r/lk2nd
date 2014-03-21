@@ -32,6 +32,8 @@
 #include <sys/types.h>
 #include <reboot.h>
 
+#define DLOAD 1
+
 void dload_util_write_cookie(uint32_t target_dload_mode_addr,
 		enum reboot_reason mode);
 
