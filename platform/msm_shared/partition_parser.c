@@ -856,6 +856,7 @@ unsigned int write_partition(unsigned size, unsigned char *partition)
 		goto end;
 	}
 
+#ifndef SAFE_MODE
 	block_size = mmc_get_device_blocksize();
 	/* size is from target_get_max_flash_size and it will check at
 	* cmd_download if it is size > download_max it will fail early
@@ -887,6 +888,9 @@ unsigned int write_partition(unsigned size, unsigned char *partition)
 		ret = 1;
 		goto end;
 	}
+#else
+	dprintf(CRITICAL, "Ignoring attempt to write partition table\n");
+#endif
 
  end:
 	return ret;
