@@ -1,0 +1,3 @@
+[submodule "dts"]
+	path = dts
+	url = https://github.com/ev-staging/kernel_lk_dts
