@@ -13,7 +13,7 @@ and then loaded by lk2nd.
 - MSM8916
 
 ## Installation
-1. Download `boot.img`
+1. Download `boot.img` (available in [Releases](https://github.com/msm8916-mainline/lk2nd/releases))
 2. Flash `boot.img` using the stock flashing procedure:
   - Fastboot: `fastboot flash boot boot.img`
   - Samsung: `heimdall flash --BOOT boot.img`
