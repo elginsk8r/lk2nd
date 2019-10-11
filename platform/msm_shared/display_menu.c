@@ -42,7 +42,7 @@
 #include <sys/types.h>
 #include <../../../app/aboot/devinfo.h>
 #include <../../../app/aboot/recovery.h>
-#include <../../../app/aboot/lk2nd-device.h>
+#include <lk2nd-device.h>
 
 #define TITLE_MSG "<!>\n\n"
 
