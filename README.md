@@ -12,14 +12,6 @@ boot image and then loaded by the stock bootloader as a "secondary" bootloader.
 The real Android boot image is placed into the boot partition with 1 MB offset,
 and then loaded by lk2nd.
 
-## Supported SoCs
-- MSM8916
-
-### Supported devices
-- Samsung Galaxy A3 (2015) - SM-A300FU
-- Samsung Galaxy A5 (2015) - SM-A500FU
-- Wileyfox Swift
-
 ## Installation
 1. Download `lk2nd.img` (available in [Releases](https://github.com/msm8916-mainline/lk2nd/releases))
 2. Flash `lk2nd.img` using the stock flashing procedure:
