@@ -29,3 +29,7 @@ OBJS += \
 	$(LOCAL_DIR)/mdtp_defs.o \
 	$(LOCAL_DIR)/mdtp_fs.o
 endif
+
+ifeq ($(TARGET), msm8916)
+OBJS += $(LOCAL_DIR)/fastboot-lk2nd-msm8916.o
+endif
