@@ -48,6 +48,7 @@
 #include <ufdt_overlay.h>
 #include <boot_stats.h>
 #include <verifiedboot.h>
+#include <lk2nd-device.h>
 
 #define NODE_PROPERTY_MAX_LEN   64
 #define ADD_OF(a, b) (UINT_MAX - b > a) ? (a + b) : UINT_MAX
@@ -2218,6 +2219,7 @@ int update_device_tree(void *fdt, const char *cmdline,
 		}
 	}
 
+	lk2nd_update_device_tree(fdt, cmdline);
 	fdt_pack(fdt);
 
 #if ENABLE_PARTIAL_GOODS_SUPPORT
