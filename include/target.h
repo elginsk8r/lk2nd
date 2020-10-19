@@ -70,7 +70,6 @@ unsigned target_baseband(void);
 void target_serialno(unsigned char *buf);
 void target_fastboot_init(void);
 void target_load_ssd_keystore(void);
-bool target_is_ssd_enabled(void);
 void *target_mmc_device();
 uint32_t is_user_force_reset(void);
 
@@ -95,7 +94,6 @@ uint32_t target_get_hlos_subtype(void);
 void shutdown_device();
 uint32_t target_is_pwrkey_pon_reason(void);
 bool target_warm_boot(void);
-bool target_use_signed_kernel(void);
 int _emmc_recovery_init(void);
 void ulpi_write(unsigned val, unsigned reg);
 void target_crypto_init_params(void);
@@ -126,4 +124,22 @@ bool target_battery_is_present();
 uint32_t target_get_pmic();
 int target_update_cmdline(char *cmdline);
 int target_get_vb_version();
+
+static inline bool target_use_signed_kernel(void)
+{
+#if _SIGNED_KERNEL
+	return 1;
+#else
+	return 0;
+#endif
+}
+
+static inline bool target_is_ssd_enabled(void)
+{
+#ifdef SSD_ENABLE
+	return 1;
+#else
+	return 0;
+#endif
+}
 #endif
