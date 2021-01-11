@@ -21,6 +21,11 @@ and then loaded by lk2nd.
   - Fastboot: `fastboot flash boot lk2nd.img`
   - Samsung: `heimdall flash --BOOT lk2nd.img`
 
+If you get `fastboot: error: Couldn't parse partition size '0x'` try one of the following workarounds:
+
+- `fastboot flash:raw boot lk2nd.img`
+- `fastboot boot lk2nd.img`, then `fastboot flash lk2nd lk2nd.img`
+
 ## Usage
 lk2nd provides the standard Android fastboot protocol for flashing/booting Android boot images.
 
