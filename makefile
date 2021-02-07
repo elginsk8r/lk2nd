@@ -218,6 +218,10 @@ include make/module.mk
 # any extra top level build dependencies that someone declared
 all:: $(EXTRA_BUILDDEPS)
 
+ifneq ($(filter lk2nd,$(ALLMODULES)),)
+INCLUDES += -Ilk2nd/include
+endif
+
 ALLOBJS := \
 	$(BOOTOBJS) \
 	$(OBJS)

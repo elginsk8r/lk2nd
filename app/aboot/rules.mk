@@ -9,7 +9,6 @@ MODULES += lib/zlib_inflate
 OBJS += \
 	$(LOCAL_DIR)/aboot.o \
 	$(LOCAL_DIR)/fastboot.o \
-	$(LOCAL_DIR)/fastboot-lk2nd.o \
 	$(LOCAL_DIR)/recovery.o
 
 ifeq ($(ENABLE_UNITTEST_FW), 1)
@@ -28,6 +27,10 @@ OBJS += \
 	$(LOCAL_DIR)/mdtp_fuse.o \
 	$(LOCAL_DIR)/mdtp_defs.o \
 	$(LOCAL_DIR)/mdtp_fs.o
+endif
+
+ifneq ($(filter lk2nd,$(ALLMODULES)),)
+OBJS += $(LOCAL_DIR)/fastboot-lk2nd.o
 endif
 
 ifeq ($(TARGET), msm8916)

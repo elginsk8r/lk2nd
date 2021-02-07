@@ -1,3 +1,7 @@
 [submodule "dts"]
 	path = dts
 	url = https://github.com/ev-staging/kernel_lk_dts
+[submodule "lk2nd"]
+	path = lk2nd
+	url = https://github.com/ev-staging/kernel_lk2nd
+	branch = main
