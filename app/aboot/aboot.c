@@ -3821,6 +3821,7 @@ void cmd_flash_mmc_img(const char *arg, void *data, unsigned sz)
 
 	if (pname)
 	{
+#if !DISABLE_LOCK
 		if (!strncmp(pname, "frp-unlock", strlen("frp-unlock")))
 		{
 			if (!aboot_frp_unlock(pname, data, sz))
@@ -3833,6 +3834,7 @@ void cmd_flash_mmc_img(const char *arg, void *data, unsigned sz)
 
 			return;
 		}
+#endif
 
 		if (!strcmp(pname, "partition"))
 		{
@@ -5267,6 +5269,7 @@ void aboot_fastboot_register_commands(void)
 						{"continue", cmd_continue},
 						{"reboot", cmd_reboot},
 						{"reboot-bootloader", cmd_reboot_bootloader},
+#if !DISABLE_LOCK
 						{"oem unlock", cmd_oem_unlock},
 						{"oem unlock-go", cmd_oem_unlock_go},
 						{"oem lock", cmd_oem_lock},
@@ -5275,6 +5278,7 @@ void aboot_fastboot_register_commands(void)
 						{"flashing lock_critical", cmd_flashing_lock_critical},
 						{"flashing unlock_critical", cmd_flashing_unlock_critical},
 						{"flashing get_unlock_ability", cmd_flashing_get_unlock_ability},
+#endif
 						{"oem device-info", cmd_oem_devinfo},
 						{"preflash", cmd_preflash},
 						{"oem enable-charger-screen", cmd_oem_enable_charger_screen},
@@ -5432,7 +5436,9 @@ void aboot_init(const struct app_descriptor *app)
 	lk2nd_init();
 #endif
 	read_device_info(&device);
+#if !DISABLE_LOCK
 	read_allow_oem_unlock(&device);
+#endif
 
 	/* Detect multi-slot support */
 	if (partition_multislot_is_supported())
