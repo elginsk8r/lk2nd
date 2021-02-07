@@ -118,7 +118,9 @@ static void update_device_status(struct select_msg_info* msg_info, int reason)
 	fbcon_clear();
 	switch (reason) {
 		case RECOVER:
+#if VERIFIED_BOOT
 			reset_device_unlock_status(msg_info->info.msg_type);
+#endif
 			reboot_device(RECOVERY_MODE);
 			break;
 		case RESTART:
