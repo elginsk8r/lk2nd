@@ -73,6 +73,8 @@
 #include <libfdt.h>
 #include <dev_tree.h>
 #include <lk2nd.h>
+
+#include "fs_boot.h"
 #endif
 
 #if WDOG_SUPPORT
@@ -5618,6 +5620,14 @@ normal_boot:
 	{
 		if (target_is_emmc_boot())
 		{
+			/* Try to boot from first fs we can find */
+			ssize_t loaded_file = fsboot_boot_first(target_get_scratch_address(), target_get_max_flash_size());
+
+			if (loaded_file > 0)
+				cmd_boot(NULL, target_get_scratch_address(), target_get_max_flash_size());
+
+			dprintf(CRITICAL, "Unable to load boot.img from ext2. Continuing legacy boot\n");
+
 #if RECOVERY_MESSAGES
 			if(emmc_recovery_init())
 				dprintf(ALWAYS,"error in emmc_recovery_init\n");
@@ -5696,6 +5706,9 @@ fastboot:
 
 	/* dump partition table for debug info */
 	partition_dump();
+
+	/* Log stuff for fs-boot */
+	fsboot_test();
 
 	/* initialize and start fastboot */
 #if !VERIFIED_BOOT_2
