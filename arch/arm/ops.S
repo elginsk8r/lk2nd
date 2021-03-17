@@ -301,3 +301,8 @@ FUNCTION(arm_write_mair1)
 FUNCTION(arm_write_ttbcr)
 	mcr p15, 0, r0, c2, c0, 2
 	bx lr
+
+/* uint32_t smc_call(uint32_t arg0, uint32_t arg1, uint32_t arg2, uint32_t arg3); */
+FUNCTION(smc_call)
+	smc		#0
+	bx		lr
