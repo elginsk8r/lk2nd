@@ -32,7 +32,11 @@
 #include <sys/types.h>
 #include <reboot.h>
 
+#if USE_PON_REBOOT_REG
+#define DLOAD (1 << 31)
+#else
 #define DLOAD 1
+#endif
 
 void dload_util_write_cookie(uint32_t target_dload_mode_addr,
 		enum reboot_reason mode);
