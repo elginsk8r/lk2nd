@@ -4773,6 +4773,17 @@ void cmd_reboot_bootloader(const char *arg, void *data, unsigned sz)
 	reboot_device(FASTBOOT_MODE);
 }
 
+static void cmd_oem_reboot_edl(const char *arg, void *data, unsigned sz)
+{
+	if (set_download_mode(EMERGENCY_DLOAD)) {
+		fastboot_fail("Failed to set emergency download mode");
+		return;
+	}
+
+	fastboot_okay("");
+	reboot_device(DLOAD);
+}
+
 void cmd_oem_enable_charger_screen(const char *arg, void *data, unsigned size)
 {
 	dprintf(INFO, "Enabling charger screen check\n");
@@ -5320,6 +5331,7 @@ void aboot_fastboot_register_commands(void)
 						{"continue", cmd_continue},
 						{"reboot", cmd_reboot},
 						{"reboot-bootloader", cmd_reboot_bootloader},
+						{"oem reboot-edl", cmd_oem_reboot_edl},
 #if !DISABLE_LOCK
 						{"oem unlock", cmd_oem_unlock},
 						{"oem unlock-go", cmd_oem_unlock_go},
