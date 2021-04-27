@@ -4773,17 +4773,6 @@ void cmd_reboot_bootloader(const char *arg, void *data, unsigned sz)
 	reboot_device(FASTBOOT_MODE);
 }
 
-static void cmd_oem_reboot_edl(const char *arg, void *data, unsigned sz)
-{
-	if (set_download_mode(EMERGENCY_DLOAD)) {
-		fastboot_fail("Failed to set emergency download mode");
-		return;
-	}
-
-	fastboot_okay("");
-	reboot_device(DLOAD);
-}
-
 void cmd_oem_enable_charger_screen(const char *arg, void *data, unsigned size)
 {
 	dprintf(INFO, "Enabling charger screen check\n");
@@ -5161,6 +5150,7 @@ int fetch_image_from_partition()
 	}
 }
 
+<<<<<<< HEAD
 static void cmd_oem_screenshot(const char *arg, void *data, unsigned sz)
 {
 	struct fbcon_config *fb = fbcon_display();
@@ -5196,6 +5186,10 @@ static void cmd_oem_screenshot(const char *arg, void *data, unsigned sz)
 }
 
 void publish_getvar_multislot_vars()
+=======
+/* Get the size from partiton name */
+static void get_partition_size(const char *arg, char *response)
+>>>>>>> 4cc31ccf99 (app: aboot: Move fastboot commands added in lk2nd to fastboot-extra)
 {
 	int i,count;
 	static bool published = false;
@@ -5331,7 +5325,6 @@ void aboot_fastboot_register_commands(void)
 						{"continue", cmd_continue},
 						{"reboot", cmd_reboot},
 						{"reboot-bootloader", cmd_reboot_bootloader},
-						{"oem reboot-edl", cmd_oem_reboot_edl},
 #if !DISABLE_LOCK
 						{"oem unlock", cmd_oem_unlock},
 						{"oem unlock-go", cmd_oem_unlock_go},
@@ -5361,9 +5354,6 @@ void aboot_fastboot_register_commands(void)
 						{"oem run-tests", cmd_oem_runtests},
 #endif
 #endif
-#endif
-#if DISPLAY_SPLASH_SCREEN
-						{"oem screenshot", cmd_oem_screenshot},
 #endif
 						};
 
@@ -5696,6 +5686,7 @@ fastboot:
 
 	/* register aboot specific fastboot commands */
 	aboot_fastboot_register_commands();
+	fastboot_extra_register_commands();
 	target_fastboot_register_commands();
 #if WITH_LK2ND
 	fastboot_lk2nd_register_commands();

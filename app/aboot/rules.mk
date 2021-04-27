@@ -33,6 +33,8 @@ OBJS += \
 	$(LOCAL_DIR)/mdtp_fs.o
 endif
 
+OBJS += $(LOCAL_DIR)/fastboot-extra.o
+
 ifneq ($(filter lk2nd,$(ALLMODULES)),)
 OBJS += $(LOCAL_DIR)/fastboot-lk2nd.o
 endif
