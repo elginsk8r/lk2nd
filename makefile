@@ -98,8 +98,6 @@ ifeq ($(ENABLE_EARLY_ETHERNET),1)
   CFLAGS += -DENABLE_EARLY_ETHERNET=1
 endif
 
-CFLAGS += -DLK2ND_VERSION=\"$(LK2ND_VERSION)\"
-
 # setup toolchain prefix
 TOOLCHAIN_PREFIX ?= arm-eabi-
 CFLAGS += -fstack-protector-all
@@ -310,6 +308,7 @@ $(CONFIGHEADER): configheader
 	echo \#ifndef __CONFIG_H > $(CONFIGHEADER).tmp; \
 	echo \#define __CONFIG_H >> $(CONFIGHEADER).tmp; \
 	echo \#define BOARD $(BOARD_NAME) >> $(CONFIGHEADER).tmp; \
+	echo \#define LK2ND_VERSION \"$(LK2ND_VERSION)\" >> $(CONFIGHEADER).tmp; \
 	for d in `echo $(DEFINES) | tr [:lower:] [:upper:]`; do \
 		echo "#define $$d" | sed "s/=/\ /g;s/-/_/g;s/\//_/g" >> $(CONFIGHEADER).tmp; \
 	done; \
