@@ -23,12 +23,7 @@
 #ifndef __SYS_TYPES_H
 #define __SYS_TYPES_H
 
-#ifndef __cplusplus
-#define false 0
-#define true 1
-typedef int bool;
-#endif
-
+#include <stdbool.h>
 #include <stddef.h>
 #include <limits.h>
 #include <stdint.h>
@@ -59,7 +54,6 @@ typedef uint8_t uint8;
 typedef uint16_t uint16;
 typedef uint32_t uint32;
 typedef uint64_t uint64;
-typedef int     boolean;
 typedef int8_t int8;
 typedef int16_t int16;
 typedef int32_t int32;
