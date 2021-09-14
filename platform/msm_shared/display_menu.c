@@ -44,7 +44,7 @@
 #include <../../../app/aboot/recovery.h>
 #include <lk2nd.h>
 #if TARGET_MSM8916
-#include "psci.h"
+#include <psci.h>
 #endif
 
 #define TITLE_MSG "<!>\n\n"
