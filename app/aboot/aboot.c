@@ -1261,7 +1261,7 @@ void boot_linux(void *kernel, unsigned *tags,
 	mac = generate_mac_address();
 
 	/* Update the Device Tree */
-	ret = update_device_tree((void *)tags,(const char *)final_cmdline, ramdisk, ramdisk_size, mac);
+	ret = update_device_tree((void *)tags,(const char *)final_cmdline, ramdisk, ramdisk_size, mac, IS_ARM64(kptr));
 	if(ret)
 	{
 		dprintf(CRITICAL, "ERROR: Updating Device Tree Failed \n");
@@ -5152,46 +5152,7 @@ int fetch_image_from_partition()
 	}
 }
 
-<<<<<<< HEAD
-static void cmd_oem_screenshot(const char *arg, void *data, unsigned sz)
-{
-	struct fbcon_config *fb = fbcon_display();
-	unsigned hdr;
-
-	if (!fb) {
-		fastboot_fail("display not initialized");
-		return;
-	}
-
-	if (fb->format != FB_FORMAT_RGB888 || fb->bpp != 24) {
-		fastboot_fail("unsupported fb format\n");
-		return;
-	}
-
-	sz = fb->width * fb->height;
-	if (sz % sizeof(uint64_t) != 0) {
-		fastboot_fail("unsupported display resolution\n");
-		return;
-	}
-
-	/* PPM image header, see http://netpbm.sourceforge.net/doc/ppm.html */
-	hdr = sprintf(data, "P6\n\n%7u %7u\n255\n", fb->width, fb->height);
-	ASSERT(hdr % sizeof(uint64_t) == 0);
-
-	sz = fb->width * fb->height;
-
-	/* PPM expects RGB but this seems to be BGR, so do some fancy swapping! */
-	//memcpy(data + hdr, fb->base, sz * 3);
-	rgb888_swap(fb->base, data + hdr, sz / sizeof(uint64_t));
-
-	fastboot_stage(data, hdr + sz*3);
-}
-
 void publish_getvar_multislot_vars()
-=======
-/* Get the size from partiton name */
-static void get_partition_size(const char *arg, char *response)
->>>>>>> 4cc31ccf99 (app: aboot: Move fastboot commands added in lk2nd to fastboot-extra)
 {
 	int i,count;
 	static bool published = false;
