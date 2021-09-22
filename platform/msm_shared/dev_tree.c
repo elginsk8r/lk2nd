@@ -747,7 +747,8 @@ static void dt_entry_list_delete(struct dt_entry_node *dt_node_member)
 	}
 }
 
-static int dev_tree_compatible(void *dtb, uint32_t dtb_size, int root_offset, struct dt_entry_node *dtb_list)
+static int dev_tree_compatible(void *dtb, void *real_dtb, uint32_t dtb_size,
+			       int root_offset, struct dt_entry_node *dtb_list)
 {
 	const void *prop = NULL;
 	const char *plat_prop = NULL;
@@ -856,7 +857,7 @@ static int dev_tree_compatible(void *dtb, uint32_t dtb_size, int root_offset, st
 			cur_dt_entry->pmic_rev[1] = board_pmic_target(1);
 			cur_dt_entry->pmic_rev[2] = board_pmic_target(2);
 			cur_dt_entry->pmic_rev[3] = board_pmic_target(3);
-			cur_dt_entry->offset = (uint32_t)dtb;
+			cur_dt_entry->offset = (uint32_t)real_dtb;
 			cur_dt_entry->size = dtb_size;
 
 			dprintf(SPEW, "Found an appended flattened device tree (%s - %u %u 0x%x)\n",
@@ -1006,7 +1007,7 @@ static int dev_tree_compatible(void *dtb, uint32_t dtb_size, int root_offset, st
 						dt_entry_array[k].pmic_rev[1]= pmic_data[n].pmic_version[1];
 						dt_entry_array[k].pmic_rev[2]= pmic_data[n].pmic_version[2];
 						dt_entry_array[k].pmic_rev[3]= pmic_data[n].pmic_version[3];
-						dt_entry_array[k].offset = (uint32_t)dtb;
+						dt_entry_array[k].offset = (uint32_t)real_dtb;
 						dt_entry_array[k].size = dtb_size;
 						k++;
 					}
@@ -1020,7 +1021,7 @@ static int dev_tree_compatible(void *dtb, uint32_t dtb_size, int root_offset, st
 					dt_entry_array[k].pmic_rev[1]= board_pmic_target(1);
 					dt_entry_array[k].pmic_rev[2]= board_pmic_target(2);
 					dt_entry_array[k].pmic_rev[3]= board_pmic_target(3);
-					dt_entry_array[k].offset = (uint32_t)dtb;
+					dt_entry_array[k].offset = (uint32_t)real_dtb;
 					dt_entry_array[k].size = dtb_size;
 					k++;
 				}
@@ -1228,6 +1229,7 @@ void *dev_tree_appended(void *kernel, uint32_t kernel_size, uint32_t dtb_offset,
 
 	while (((uintptr_t)dtb + sizeof(struct fdt_header)) < (uintptr_t)kernel_end) {
 		struct fdt_header dtb_hdr __attribute__ ((aligned(8)));
+		void *dtb_aligned = dtb;
 		uint32_t dtb_size;
 
 		/* the DTB could be unaligned, so extract the header,
@@ -1240,7 +1242,7 @@ void *dev_tree_appended(void *kernel, uint32_t kernel_size, uint32_t dtb_offset,
 			break;
 		dtb_size = fdt_totalsize(&dtb_hdr);
 
-		dev_tree_compatible(dtb, dtb_size, 0, dt_entry_queue);
+		dev_tree_compatible(dtb_aligned, dtb, dtb_size, 0, dt_entry_queue);
 
 		/* goto the next device tree if any */
 		dtb += dtb_size;
@@ -2439,7 +2441,7 @@ int dev_tree_get_dt_entry(const void *fdt, int offset, struct dt_entry *dt_entry
 		.dt_entry_m = dt_entry
 	};
 
-	if (!dev_tree_compatible((void*)fdt, fdt_totalsize(fdt), offset, &node))
+	if (!dev_tree_compatible((void*)fdt, (void*)fdt, fdt_totalsize(fdt), offset, &node))
 		return false;
 
 	if (platform_dt_absolute_match(dt_entry, NULL)) {
