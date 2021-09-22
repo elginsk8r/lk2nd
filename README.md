@@ -77,4 +77,4 @@ Replace `TOOLCHAIN_PREFIX` with the path to your tool chain.
 (TODO: Document this properly)
 
 ## Contact
-Ping `minecrell`/`Mis012` on [`#postmarketos-mainline`](https://wiki.postmarketos.org/wiki/Matrix_and_IRC).
+Ask on [`#postmarketos-mainline`](https://wiki.postmarketos.org/wiki/Matrix_and_IRC) (Matrix or IRC).
