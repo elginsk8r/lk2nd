@@ -15,6 +15,7 @@ typedef struct {
 } FILE;
 
 void putc(char c);
+int putchar(int c);
 int puts(const char *str);
 int getc(char *c); // XXX not really getc
 size_t fwrite(const void *buf, size_t size, size_t count, FILE *stream);
