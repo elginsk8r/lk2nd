@@ -4,6 +4,7 @@ $(error The lk2nd configurations provide development/debugging helpers and are
 	therefore currently not designed to be used together with secure boot)
 endif
 
+override ENABLE_LPAE_SUPPORT := 0
 include project/$(TARGET).mk
 
 DEBUG := 1
