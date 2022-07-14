@@ -35,7 +35,6 @@
 #include <arch/arm.h>
 #include <reg.h>
 #include <kernel/thread.h>
-#include <dev/gpio.h>
 #include <stdlib.h>
 #include <string.h>
 
