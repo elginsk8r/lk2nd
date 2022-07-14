@@ -2,8 +2,6 @@
  * Copyright (c) 2008, Google Inc.
  * All rights reserved.
  *
- * Copyright (c) 2014 The Linux Foundation. All rights reserved
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -28,17 +26,11 @@
  * SUCH DAMAGE.
  */
 
-#include <platform/gpio.h>
-
 #ifndef __DEV_GPIO_H
 #define __DEV_GPIO_H
 
-#ifndef GPIO_INPUT
 #define GPIO_INPUT	0x0000
-#endif
-#ifndef GPIO_OUTPUT
 #define GPIO_OUTPUT	0x0001
-#endif
 
 #define GPIO_LEVEL	0x0000
 #define GPIO_EDGE	0x0010
