@@ -31,7 +31,6 @@
 #include <msm_panel.h>
 #include <target/display.h>
 #include <platform/gpio.h>
-#include <dev/gpio.h>
 #include <platform/timer.h>
 #include "mdss_spi.h"
 
