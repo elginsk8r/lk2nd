@@ -48,9 +48,9 @@ static int spidev_write_cmd(struct qup_spi_dev *dev, char cmd)
 	dev->bit_shift_en = 1;
 	buf[0] = cmd;
 
-	gpio_set(spi_panel_dc_gpio, 0);
+	gpio_set_dir(spi_panel_dc_gpio, 0);
 	ret = spi_qup_write(dev, buf, 1);
-	gpio_set(spi_panel_dc_gpio, 2);
+	gpio_set_dir(spi_panel_dc_gpio, 2);
 	if (ret)
 		dprintf(CRITICAL, "Send SPI command to panel failed\n");
 
@@ -71,9 +71,9 @@ static int spidev_read_cmd(struct qup_spi_dev *dev, unsigned char *buf,
 	dev->bytes_per_word = bytes_per_word;
 	dev->bit_shift_en = 1;
 
-	gpio_set(spi_panel_dc_gpio, 0);
+	gpio_set_dir(spi_panel_dc_gpio, 0);
 	ret = spi_qup_read(dev, buf, len);
-	gpio_set(spi_panel_dc_gpio, 2);
+	gpio_set_dir(spi_panel_dc_gpio, 2);
 
 	for(i = 0; i < bytes_per_word * len; i++)
 		dprintf(SPEW, "-----Read: 0x%x-----\n", buf[i]);

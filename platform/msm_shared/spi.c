@@ -34,22 +34,22 @@ void spi_bit_bang_write(uint8_t spi_sclk, uint8_t spi_mosi, uint8_t dc, uint8_t 
 	uint8_t bit;
 	uint8_t bnum;
 
-	gpio_set(spi_sclk, 0); /* clk low */
+	gpio_set_dir(spi_sclk, 0); /* clk low */
 	/* dc: 0 for command, 1 for parameter */
-	gpio_set(spi_mosi, dc);
+	gpio_set_dir(spi_mosi, dc);
 	udelay(1);	/* at least 20 ns */
-	gpio_set(spi_sclk, 1); /* clk high */
+	gpio_set_dir(spi_sclk, 1); /* clk high */
 	udelay(1);	/* at least 20 ns */
 	bnum = 8;	/* 8 data bits */
 	bit = 0x80;
 	while(bnum){
-		gpio_set(spi_sclk, 0); /* clk low */
+		gpio_set_dir(spi_sclk, 0); /* clk low */
 		if (data & bit)
-			gpio_set(spi_mosi, 1);
+			gpio_set_dir(spi_mosi, 1);
 		else
-			gpio_set(spi_mosi, 0);
+			gpio_set_dir(spi_mosi, 0);
 		udelay(1);
-		gpio_set(spi_sclk, 1); /* clk high */
+		gpio_set_dir(spi_sclk, 1); /* clk high */
 		udelay(1);
 		bit >>= 1;
 		bnum--;

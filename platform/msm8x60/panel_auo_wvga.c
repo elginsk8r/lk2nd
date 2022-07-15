@@ -35,7 +35,7 @@
 #include <platform/gpio.h>
 #include <dev/lcdc.h>
 
-#define GPIO_SET_OUT_VAL(gpio,val) (gpio_set(gpio,(val)<<1))
+#define GPIO_SET_OUT_VAL(gpio,val) (gpio_set_dir(gpio,(val)<<1))
 
 #define LCDC_SPI_GPIO_CLK		73
 #define LCDC_SPI_GPIO_CS		72

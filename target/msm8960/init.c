@@ -496,7 +496,7 @@ void apq8064_ext_3p3V_enable()
 	gpio_tlmm_config(77, 0, GPIO_OUTPUT, GPIO_NO_PULL, GPIO_8MA, GPIO_ENABLE);
 
 	/* Output High */
-	gpio_set(77, 2);
+	gpio_set_dir(77, 2);
 }
 
 /* Do target specific usb initialization */

@@ -59,7 +59,7 @@ void msm8960_keypad_gpio_init();
 void msm8930_keypad_gpio_init();
 void apq8064_keypad_gpio_init();
 
-void gpio_set(uint32_t gpio, uint32_t dir);
+void gpio_set_dir(uint32_t gpio, uint32_t dir);
 void gpio_tlmm_config(uint32_t gpio, uint8_t func, uint8_t dir,
 		      uint8_t pull, uint8_t drvstr, uint32_t enable);
 
