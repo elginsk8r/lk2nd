@@ -472,7 +472,7 @@ void hsusb_gpio_init(void)
 	dir = 2;
 	drv = GPIO_2MA;
 	gpio_tlmm_config(131, func, dir, pull, drv, enable);
-	gpio_set(131, dir);
+	gpio_set_dir(131, dir);
 
 	func = 0;
 	enable = 1;
@@ -480,7 +480,7 @@ void hsusb_gpio_init(void)
 	dir = 1;
 	drv = GPIO_2MA;
 	gpio_tlmm_config(132, func, dir, pull, drv, enable);
-	gpio_set(132, dir);
+	gpio_set_dir(132, dir);
 
 	return;
 }

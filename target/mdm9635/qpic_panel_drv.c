@@ -94,7 +94,7 @@ static void panel_io_off(struct qpic_panel_io_desc *qpic_panel_io)
 				GPIO_10MA, GPIO_DISABLE);
 	gpio_tlmm_config(BL_GPIO_ID, GPIOMUX_FUNC_GPIO, GPIO_INPUT, GPIO_NO_PULL,
 				GPIO_10MA, GPIO_ENABLE);
-	gpio_set(BL_GPIO_ID, 0x0);
+	gpio_set_dir(BL_GPIO_ID, 0x0);
 
 	/* Disabling vdd & avdd voltage */
 	rpm_send_data(&ldo6[GENERIC_DISABLE][0], 36, RPM_REQUEST_TYPE);
@@ -130,7 +130,7 @@ static int panel_io_on(struct qpic_panel_io_desc *qpic_panel_io)
 			GPIO_10MA, GPIO_ENABLE);
 	gpio_tlmm_config(BL_GPIO_ID, GPIOMUX_FUNC_GPIO, GPIO_INPUT, GPIO_NO_PULL,
 			GPIO_10MA, GPIO_DISABLE);
-	gpio_set(BL_GPIO_ID, 0x2);
+	gpio_set_dir(BL_GPIO_ID, 0x2);
 
 	mdelay(20);
 	return rc;

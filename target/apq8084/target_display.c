@@ -285,20 +285,20 @@ int target_panel_reset(uint8_t enable, struct panel_reset_sequence *resetseq,
 			bkl_gpio.pin_direction, bkl_gpio.pin_pull,
 			bkl_gpio.pin_strength, bkl_gpio.pin_state);
 
-		gpio_set(enable_gpio.pin_id, 2);
-		gpio_set(bkl_gpio.pin_id, 2);
+		gpio_set_dir(enable_gpio.pin_id, 2);
+		gpio_set_dir(bkl_gpio.pin_id, 2);
 		/* reset */
 		for (i = 0; i < RESET_GPIO_SEQ_LEN; i++) {
 			if (resetseq->pin_state[i] == GPIO_STATE_LOW)
-				gpio_set(reset_gpio.pin_id, GPIO_STATE_LOW);
+				gpio_set_dir(reset_gpio.pin_id, GPIO_STATE_LOW);
 			else
-				gpio_set(reset_gpio.pin_id, GPIO_STATE_HIGH);
+				gpio_set_dir(reset_gpio.pin_id, GPIO_STATE_HIGH);
 			mdelay(resetseq->sleep[i]);
 		}
 	} else {
-		gpio_set(reset_gpio.pin_id, 0);
-		gpio_set(enable_gpio.pin_id, 0);
-		gpio_set(bkl_gpio.pin_id, 0);
+		gpio_set_dir(reset_gpio.pin_id, 0);
+		gpio_set_dir(enable_gpio.pin_id, 0);
+		gpio_set_dir(bkl_gpio.pin_id, 0);
 	}
 
 	return NO_ERROR;
@@ -457,10 +457,10 @@ int target_hdmi_gpio_ctrl(uint8_t enable)
 		hdmi_hpd_gpio.pin_direction, hdmi_hpd_gpio.pin_pull,
 		hdmi_hpd_gpio.pin_strength, hdmi_hpd_gpio.pin_state);
 
-	gpio_set(hdmi_cec_gpio.pin_id,      hdmi_cec_gpio.pin_direction);
-	gpio_set(hdmi_ddc_clk_gpio.pin_id,  hdmi_ddc_clk_gpio.pin_direction);
-	gpio_set(hdmi_ddc_data_gpio.pin_id, hdmi_ddc_data_gpio.pin_direction);
-	gpio_set(hdmi_hpd_gpio.pin_id,      hdmi_hpd_gpio.pin_direction);
+	gpio_set_dir(hdmi_cec_gpio.pin_id,      hdmi_cec_gpio.pin_direction);
+	gpio_set_dir(hdmi_ddc_clk_gpio.pin_id,  hdmi_ddc_clk_gpio.pin_direction);
+	gpio_set_dir(hdmi_ddc_data_gpio.pin_id, hdmi_ddc_data_gpio.pin_direction);
+	gpio_set_dir(hdmi_hpd_gpio.pin_id,      hdmi_hpd_gpio.pin_direction);
 
 	/* MUX */
 	gpio_tlmm_config(hdmi_mux_lpm_gpio.pin_id, 0,   /* gpio 27 MUX LPM */
@@ -475,9 +475,9 @@ int target_hdmi_gpio_ctrl(uint8_t enable)
 		hdmi_mux_sel_gpio.pin_direction, hdmi_mux_sel_gpio.pin_pull,
 		hdmi_mux_sel_gpio.pin_strength, hdmi_mux_sel_gpio.pin_state);
 
-	gpio_set(hdmi_mux_lpm_gpio.pin_id, hdmi_mux_lpm_gpio.pin_direction);
-	gpio_set(hdmi_mux_en_gpio.pin_id,  hdmi_mux_en_gpio.pin_direction);
-	gpio_set(hdmi_mux_sel_gpio.pin_id, hdmi_mux_sel_gpio.pin_direction);
+	gpio_set_dir(hdmi_mux_lpm_gpio.pin_id, hdmi_mux_lpm_gpio.pin_direction);
+	gpio_set_dir(hdmi_mux_en_gpio.pin_id,  hdmi_mux_en_gpio.pin_direction);
+	gpio_set_dir(hdmi_mux_sel_gpio.pin_id, hdmi_mux_sel_gpio.pin_direction);
 
 	return NO_ERROR;
 }
@@ -536,16 +536,16 @@ int target_edp_panel_enable(void)
 		edp_lvl_en_gpio.pin_direction, edp_lvl_en_gpio.pin_pull,
 		edp_lvl_en_gpio.pin_strength, edp_lvl_en_gpio.pin_state);
 
-	gpio_set(enable_gpio.pin_id, 2);
-	gpio_set(edp_lvl_en_gpio.pin_id, 2);
+	gpio_set_dir(enable_gpio.pin_id, 2);
+	gpio_set_dir(edp_lvl_en_gpio.pin_id, 2);
 
 	return NO_ERROR;
 }
 
 int target_edp_panel_disable(void)
 {
-	gpio_set(edp_lvl_en_gpio.pin_id, 0);
-	gpio_set(enable_gpio.pin_id, 0);
+	gpio_set_dir(edp_lvl_en_gpio.pin_id, 0);
+	gpio_set_dir(enable_gpio.pin_id, 0);
 
 	return NO_ERROR;
 }

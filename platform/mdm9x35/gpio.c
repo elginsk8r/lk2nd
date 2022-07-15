@@ -50,7 +50,7 @@ void gpio_tlmm_config(uint32_t gpio,
 	return;
 }
 
-void gpio_set(uint32_t gpio, uint32_t dir)
+void gpio_set_dir(uint32_t gpio, uint32_t dir)
 {
 	writel(dir, GPIO_IN_OUT_ADDR(gpio));
 

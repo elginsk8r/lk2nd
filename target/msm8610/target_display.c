@@ -139,19 +139,19 @@ int target_panel_reset(uint8_t enable, struct panel_reset_sequence *resetseq,
 		/* reset */
 		for (i = 0; i < RESET_GPIO_SEQ_LEN; i++) {
 			if (resetseq->pin_state[i] == GPIO_STATE_LOW)
-				gpio_set(reset_gpio.pin_id, GPIO_STATE_LOW);
+				gpio_set_dir(reset_gpio.pin_id, GPIO_STATE_LOW);
 			else
-				gpio_set(reset_gpio.pin_id, GPIO_STATE_HIGH);
+				gpio_set_dir(reset_gpio.pin_id, GPIO_STATE_HIGH);
 			mdelay(resetseq->sleep[i]);
 		}
 
 		if (pinfo->mipi.mode_gpio_state == MODE_GPIO_STATE_ENABLE)
-			gpio_set(mode_gpio.pin_id, 2);
+			gpio_set_dir(mode_gpio.pin_id, 2);
 		else if (pinfo->mipi.mode_gpio_state == MODE_GPIO_STATE_DISABLE)
-			gpio_set(mode_gpio.pin_id, 0);
+			gpio_set_dir(mode_gpio.pin_id, 0);
 	} else if(!target_cont_splash_screen()) {
-		gpio_set(reset_gpio.pin_id, 0);
-		gpio_set(mode_gpio.pin_id, 0);
+		gpio_set_dir(reset_gpio.pin_id, 0);
+		gpio_set_dir(mode_gpio.pin_id, 0);
 	}
 	return 0;
 }
