@@ -11,4 +11,6 @@
 #define LK2ND_GPIO_PIN(num, dev, flags) \
 	((num & 0xFFFF) | (dev & 0xFF) << 16 | (flags & 0xFF) << 24)
 
+int lk2nd_dev_gpio_get(const void *dtb, int node, const char *name);
+
 #endif /* LK2ND_GPIO_H */
