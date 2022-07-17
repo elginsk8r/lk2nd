@@ -5,6 +5,8 @@
 #include <debug.h>
 #include <dev/gpio.h>
 #include <stdint.h>
+#include <string.h>
+#include <libfdt.h>
 
 #include <lk2nd/gpio.h>
 
@@ -83,4 +85,54 @@ int gpio_get(uint32_t nr)
 	}
 
 	return (NR_FLAGS(nr) & LK2ND_GPIO_ACTIVE_LOW ? !val : !!val);
+}
+
+/**
+ * lk2nd_dev_gpio_get() - Get gpio number from the DT definition.
+ * @dtb:  pointer to the DT.
+ * @node: Offset of the node containing the foo-gpios property.
+ * @name: Name of the gpio in the DT node (i.e. foo for foo-gpios).
+ *        name can be NULL for a simple "gpios" property. 
+ *
+ * Returns: GPIO nr that can be used for GPIO operations.
+ *
+ * If an error occurs, a negative value will be returned.
+ */
+int lk2nd_dev_gpio_get(const void *dtb, int node, const char *name)
+{
+	char prop_name[32 + 7] = "gpios";
+	const uint32_t *prop_val;
+	uint32_t nr, num, dev, flags;
+	int len, ret;
+
+	if (name) {
+		strncpy(prop_name, name, 32);
+		strcat(prop_name, "-gpios");
+	}
+
+	prop_val = fdt_getprop(dtb, node, prop_name, &len);
+
+	if (len < 0) {
+		dprintf(CRITICAL, "gpio_get failed: Unable to get property: %d\n", len);
+		return len;
+	} else if (len != 3 * sizeof(uint32_t)) {
+		dprintf(CRITICAL, "gpio_get failed: gpios arrays are not supported. (len=%d)\n", len);
+		return -1;
+	}
+
+	num = fdt32_to_cpu(prop_val[1]);
+	dev = fdt32_to_cpu(prop_val[0]) & 0xff;
+	flags = fdt32_to_cpu(prop_val[2]);
+
+	/* Last byte is used for persisstent flags */
+	nr = LK2ND_GPIO_PIN(num, dev, NR_FLAGS(flags));
+
+	/* First 3 bytes are initial configuration */
+	ret = gpio_config(nr, flags & 0xffffff);
+	if (ret < 0) {
+		dprintf(CRITICAL, "gpio_get failed: Unable to configure gpio: %d\n", len);
+		return ret;
+	}
+
+	return nr;
 }
