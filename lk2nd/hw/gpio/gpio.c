@@ -32,6 +32,12 @@ int gpio_config(uint32_t nr, uint32_t flags)
 	case LK2ND_GPIO_DEV_TLMM:
 		return lk2nd_gpio_tlmm_config(NR_PIN(nr), flags);
 
+	case LK2ND_GPIO_DEV_PM8X41:
+		return lk2nd_gpio_pm8x41_config(NR_PIN(nr), flags);
+
+	case LK2ND_GPIO_DEV_PM8X41_PON:
+		return lk2nd_gpio_pm8x41_pon_config(NR_PIN(nr), flags);
+
 	default:
 		dprintf(CRITICAL, "gpio_config: device %d is not known.\n", NR_DEV(nr));
 	}
@@ -56,6 +62,14 @@ void gpio_set(uint32_t nr, uint32_t on)
 		lk2nd_gpio_tlmm_set(NR_PIN(nr), val);
 		break;
 
+	case LK2ND_GPIO_DEV_PM8X41:
+		lk2nd_gpio_pm8x41_set(NR_PIN(nr), val);
+		break;
+
+	case LK2ND_GPIO_DEV_PM8X41_PON:
+		lk2nd_gpio_pm8x41_pon_set(NR_PIN(nr), val);
+		break;
+
 	default:
 		dprintf(CRITICAL, "gpio_set: device %d is not known.\n", NR_DEV(nr));
 	}
@@ -78,6 +92,14 @@ int gpio_get(uint32_t nr)
 	case 0:
 	case LK2ND_GPIO_DEV_TLMM:
 		val = lk2nd_gpio_tlmm_get(NR_PIN(nr));
+		break;
+
+	case LK2ND_GPIO_DEV_PM8X41:
+		val = lk2nd_gpio_pm8x41_get(NR_PIN(nr));
+		break;
+
+	case LK2ND_GPIO_DEV_PM8X41_PON:
+		val = lk2nd_gpio_pm8x41_pon_get(NR_PIN(nr));
 		break;
 
 	default:

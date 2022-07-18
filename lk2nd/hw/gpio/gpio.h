@@ -9,4 +9,14 @@ int lk2nd_gpio_tlmm_config(uint32_t num, uint32_t flags);
 void lk2nd_gpio_tlmm_set(uint32_t num, uint32_t on);
 int lk2nd_gpio_tlmm_get(uint32_t num);
 
+/* pm8x41 gpios */
+int lk2nd_gpio_pm8x41_config(uint32_t num, uint32_t flags);
+void lk2nd_gpio_pm8x41_set(uint32_t num, uint32_t on);
+int lk2nd_gpio_pm8x41_get(uint32_t num);
+
+/* pm8x41 PON lines */
+static inline int lk2nd_gpio_pm8x41_pon_config(uint32_t num, uint32_t flags) { return 0; };
+static inline void lk2nd_gpio_pm8x41_pon_set(uint32_t num, uint32_t on) { };
+int lk2nd_gpio_pm8x41_pon_get(uint32_t num);
+
 #endif /* HW_GPIO_H */
