@@ -38,6 +38,12 @@ int gpio_config(uint32_t nr, uint32_t flags)
 	case LK2ND_GPIO_DEV_PM8X41_PON:
 		return lk2nd_gpio_pm8x41_pon_config(NR_PIN(nr), flags);
 
+	case LK2ND_GPIO_DEV_PM8921:
+		return lk2nd_gpio_pm8921_config(NR_PIN(nr), flags);
+
+	case LK2ND_GPIO_DEV_PM8921_PON:
+		return lk2nd_gpio_pm8921_pon_config(NR_PIN(nr), flags);
+
 	default:
 		dprintf(CRITICAL, "gpio_config: device %d is not known.\n", NR_DEV(nr));
 	}
@@ -70,6 +76,14 @@ void gpio_set(uint32_t nr, uint32_t on)
 		lk2nd_gpio_pm8x41_pon_set(NR_PIN(nr), val);
 		break;
 
+	case LK2ND_GPIO_DEV_PM8921:
+		lk2nd_gpio_pm8921_set(NR_PIN(nr), val);
+		break;
+
+	case LK2ND_GPIO_DEV_PM8921_PON:
+		lk2nd_gpio_pm8921_pon_set(NR_PIN(nr), val);
+		break;
+
 	default:
 		dprintf(CRITICAL, "gpio_set: device %d is not known.\n", NR_DEV(nr));
 	}
@@ -100,6 +114,14 @@ int gpio_get(uint32_t nr)
 
 	case LK2ND_GPIO_DEV_PM8X41_PON:
 		val = lk2nd_gpio_pm8x41_pon_get(NR_PIN(nr));
+		break;
+
+	case LK2ND_GPIO_DEV_PM8921:
+		val = lk2nd_gpio_pm8921_get(NR_PIN(nr));
+		break;
+
+	case LK2ND_GPIO_DEV_PM8921_PON:
+		val = lk2nd_gpio_pm8921_pon_get(NR_PIN(nr));
 		break;
 
 	default:

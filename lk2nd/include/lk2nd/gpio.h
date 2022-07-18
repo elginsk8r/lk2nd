@@ -9,6 +9,8 @@
 #define LK2ND_GPIO_DEV_TLMM	1
 #define LK2ND_GPIO_DEV_PM8X41	2
 #define LK2ND_GPIO_DEV_PM8X41_PON	3
+#define LK2ND_GPIO_DEV_PM8921	4
+#define LK2ND_GPIO_DEV_PM8921_PON	5
 
 #define LK2ND_GPIO_PIN(num, dev, flags) \
 	((num & 0xFFFF) | (dev & 0xFF) << 16 | (flags & 0xFF) << 24)
