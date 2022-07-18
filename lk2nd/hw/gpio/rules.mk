@@ -5,3 +5,4 @@ OBJS += \
 	$(LOCAL_DIR)/gpio.o \
 	$(LOCAL_DIR)/tlmm.o \
 	$(LOCAL_DIR)/pm8x41.o \
+	$(LOCAL_DIR)/pm8921.o \
