@@ -26,6 +26,6 @@ void action_aboot_register()
 			(void*)LK2ND_ABOOT_ACTION_BOOT);
 	lk2nd_boot_add_action("partition: recovery", 5, action_aboot,
 			(void*)LK2ND_ABOOT_ACTION_RECOVERY);
-	lk2nd_boot_add_action("Fastboot", -1, action_aboot,
+	lk2nd_boot_add_action("Fastboot", 1000, action_aboot,
 			(void*)LK2ND_ABOOT_ACTION_FASTBOOT);
 }
