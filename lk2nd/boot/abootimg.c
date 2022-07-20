@@ -4,10 +4,18 @@
 #include <stdlib.h>
 #include <debug.h>
 #include <lib/fs.h>
+#include <target.h>
+#include <display_menu.h>
 
 #include <lk2nd/boot.h>
 
 #include "boot.h"
+
+/* app/aboot/aboot.c */
+extern void cmd_boot(const char *arg, void *data, unsigned sz);
+
+/* platform/msm_shared/display_menu.c */
+extern struct select_msg_info msg_info;
 
 static char abootimg_hdr[] = "ANDROID!";
 
@@ -18,9 +26,22 @@ struct action_abootimg_data {
 static enum lk2nd_boot_aboot_action action_abootimg(void *data)
 {
 	struct action_abootimg_data *adata = data;
+	void *buf = target_get_scratch_address();
+	size_t sz = target_get_max_flash_size();
+	int ret;
 
 	dprintf(INFO, "abootimg: Booting %s\n", adata->path);
 
+	/*
+	 * HACK: Init the fastboot menu mutex to avoid assert,
+	 * then fake a key_detect thread exit notfication.
+	 */
+	msg_lock_init();
+	msg_info.info.rel_exit = true;
+
+	ret = fs_load_file(adata->path, buf, sz);
+	if (ret > 0)
+		cmd_boot(NULL, buf, sz);
 
 	dprintf(CRITICAL, "abootimg: Boot failed!\n");
 
