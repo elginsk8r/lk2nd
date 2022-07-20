@@ -22,6 +22,13 @@ struct lk2nd_keymap {
 
 static struct lk2nd_keymap keymap[LK2ND_MAX_KEYS] = {0};
 
+#if WITH_DEV_PMIC_PM8X41 || WITH_DEV_PMIC_PM8921
+extern uint32_t pm8x41_get_pwrkey_is_pressed(void);
+static int target_powerkey() { return pm8x41_get_pwrkey_is_pressed(); }
+#else
+static int target_powerkey() { return 0; }
+#endif
+
 /**
  * lk2nd_keys_pressed() - Check if the key is pressed.
  * @keycode: Keycode to check.
@@ -63,6 +70,8 @@ int lk2nd_keys_pressed(uint32_t keycode)
 			return target_volume_down();
 		case KEY_VOLUMEUP:
 			return target_volume_up();
+		case KEY_POWER:
+			return target_powerkey();
 	}
 
 	return 0;
