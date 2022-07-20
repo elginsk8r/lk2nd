@@ -98,7 +98,7 @@ static const char *lock_menu_common_msg = "If you lock the bootloader, "\
 #define DELAY_30SEC 30000
 
 static bool is_thread_start = false;
-static struct select_msg_info msg_info;
+struct select_msg_info msg_info;
 
 #if VERIFIED_BOOT || VERIFIED_BOOT_2
 struct boot_verify_info {
