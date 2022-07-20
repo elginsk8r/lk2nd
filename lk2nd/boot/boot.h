@@ -39,4 +39,7 @@ void print_file_tree(char *root, char *prefix);
 /* aboot.c */
 void action_aboot_register();
 
+/* abootimg.c */
+void action_abootimg_register(char *root);
+
 #endif /* LK2ND_BOOT_BOOT_H */

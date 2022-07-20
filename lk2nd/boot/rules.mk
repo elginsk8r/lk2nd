@@ -10,3 +10,4 @@ OBJS += \
 	$(LOCAL_DIR)/boot.o \
 	$(LOCAL_DIR)/util.o \
 	$(LOCAL_DIR)/aboot.o \
+	$(LOCAL_DIR)/abootimg.o \
