@@ -5541,7 +5541,6 @@ void aboot_init(const struct app_descriptor *app)
 	if (fastboot_trigger())
 		boot_into_fastboot = true;
 	#endif
-		boot_into_fastboot = true;
 
 #if USE_PON_REBOOT_REG
 	reboot_mode = check_hard_reboot_mode();
