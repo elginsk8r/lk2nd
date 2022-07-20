@@ -120,6 +120,9 @@ struct qmp_reg *target_get_qmp_settings();
 int target_get_qmp_regsize();
 uint32_t target_ddr_cfg_reg();
 
+int target_volume_up();
+uint32_t target_volume_down();
+
 bool target_is_pmi_enabled(void);
 #if PON_VIB_SUPPORT
 void get_vibration_type();
