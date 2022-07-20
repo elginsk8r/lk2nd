@@ -63,5 +63,11 @@ int keys_get_state(uint16_t code)
 		dprintf(INFO, "Invalid keycode requested: %d\n", code);
 		return -1;
 	}
+#if WITH_LK2ND_DEVICE
+#include <lk2nd/keys.h>
+
+	return lk2nd_keys_pressed(code);
+#else
 	return bitmap_test(key_bitmap, code);
+#endif
 }
