@@ -130,6 +130,8 @@ void update_ptable_names(void)
 	}
 }
 
+int target_volume_up() { return 0; }
+
 /* Return Non zero (i.e 0x2) if vol_down pressed */
 uint32_t target_volume_down()
 {
