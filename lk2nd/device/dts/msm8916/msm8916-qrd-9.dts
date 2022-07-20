@@ -6,6 +6,16 @@
 / {
 	qcom,msm-id = <QCOM_ID_MSM8916 0>;
 	qcom,board-id = <QCOM_BOARD_ID_QRD 9>;
+
+	tlmm: tlmm {
+		compatible = "lk2nd,gpio";
+		phandle = <0x47494f01>; /* 'GIO\x01' == tlmm */
+	};
+
+	pm8916_pon: pm8916-pon {
+		compatible = "lk2nd,gpio";
+		phandle = <0x47494f03>; /* 'GIO\x03' == pm pon */
+	};
 };
 
 &lk2nd {
@@ -23,6 +33,21 @@
 			};
 			qcom,mdss_dsi_booyi_OTM1287_720p_video {
 				compatible = "longcheer,booyi-otm1287";
+			};
+		};
+
+		
+		gpio-keys {
+			compatible = "gpio-keys";
+
+			up {
+				lk2nd,code = <0x116 /* KEY_VOLUMEUP */>;
+				gpios = <&tlmm 107 (1<<8|1<<24) /*(GPIO_PULL_UP|GPIO_ACTIVE_LOW)*/>;
+			};
+
+			down {
+				lk2nd,code = <0x115 /* KEY_VOLUMEDOWN */>;
+				gpios = <&pm8916_pon 2 /* GPIO_PM8X41_RESIN */ 0>;
 			};
 		};
 	};
