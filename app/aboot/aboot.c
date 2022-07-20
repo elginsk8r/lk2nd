@@ -5591,6 +5591,26 @@ void aboot_init(const struct app_descriptor *app)
 	}
 #endif
 
+#if WITH_LK2ND_BOOT
+	switch (lk2nd_boot_do_action()) {
+	case LK2ND_ABOOT_ACTION_BOOT:
+		boot_into_recovery = 0;
+		boot_into_fastboot = false;
+		break;
+
+	case LK2ND_ABOOT_ACTION_RECOVERY:
+		boot_into_recovery = 1;
+		boot_into_fastboot = false;
+		break;
+
+	case LK2ND_ABOOT_ACTION_FASTBOOT:
+		boot_into_fastboot = true;
+		break;
+
+	case LK2ND_ABOOT_ACTION_NONE:
+	}
+#endif
+
 normal_boot:
 	if (!boot_into_fastboot)
 	{

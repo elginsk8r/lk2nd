@@ -11,6 +11,27 @@
 
 #include "boot.h"
 
+/**
+ * lk2nd_boot_do_action() - Boot the OS.
+ *
+ * This is a top-level boot application method that surveys all
+ * possible boot targets, possibly shows the selection menu and
+ * performs the boot of the selected option. It can also instruct
+ * aboot to some action if needed.
+ *
+ * Return: The method never returns if the boot action succeds.
+ * If the selected boot action returns, it's action code will be
+ * returned to correct the aboot behavior. If no action fires,
+ * LK2ND_ABOOT_ACTION_FASTBOOT is returned.
+ */
+enum lk2nd_boot_aboot_action lk2nd_boot_do_action()
+{
+	dprintf(INFO, "boot: Trying to boot...\n");
+
+	dprintf(CRITICAL, "boot: No action was performed, requesting fastboot\n");
+	return LK2ND_ABOOT_ACTION_FASTBOOT;
+}
+
 static void dump_devices()
 {
 	struct bdev_struct *bdevs = bio_get_bdevs();
