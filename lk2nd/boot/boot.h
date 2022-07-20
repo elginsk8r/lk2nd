@@ -23,6 +23,7 @@ struct lk2nd_boot_action {
 	void *data;
 };
 
+/* boot.c */
 extern struct list_node actions_list;
 
 void lk2nd_boot_add_action(
@@ -30,6 +31,10 @@ void lk2nd_boot_add_action(
 		int priority,
 		enum lk2nd_boot_aboot_action (*action)(void *data),
 		void *data);
+
+/* util.c */
+void lk2nd_boot_dump_devices();
+void print_file_tree(char *root, char *prefix);
 
 /* aboot.c */
 void action_aboot_register();

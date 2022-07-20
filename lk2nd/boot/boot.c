@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <debug.h>
 #include <list.h>
-#include <kernel/mutex.h>
 #include <lib/bio.h>
 #include <lib/fs.h>
 
@@ -28,6 +27,7 @@ void lk2nd_boot_add_action( char *name,	int priority,
 
 	list_add_tail(&actions_list, &act->node);
 }
+
 /**
  * lk2nd_boot_do_action() - Boot the OS.
  *
@@ -44,12 +44,35 @@ void lk2nd_boot_add_action( char *name,	int priority,
 enum lk2nd_boot_aboot_action lk2nd_boot_do_action()
 {
 	struct lk2nd_boot_action *entry, *best = NULL;
+	struct bdev_struct *bdevs = bio_get_bdevs();
+	char mountpoint[16];
+	bdev_t *bdev;
+	int ret;
 
 	dprintf(INFO, "boot: Trying to boot...\n");
 
 	/*
 	 * Step 1: Survey for all available boot entries.
 	 */
+
+	list_for_every_entry(&bdevs->list, bdev, bdev_t, node) {
+
+		/* Skip top level block devices. */
+		if (!bdev->is_subdev)
+			continue;
+
+		strcpy(mountpoint, "/");
+		strncat(mountpoint, bdev->name, 14);
+
+		ret = fs_mount(mountpoint, "ext2", bdev->name);
+		if (ret < 0)
+			continue;
+
+		dprintf(INFO, "Scanning %s ...\n", bdev->name);
+
+		dprintf(INFO, "%s\n", mountpoint);
+		print_file_tree(mountpoint, "");
+	}
 
 	/* aboot actions go last in the list. */
 	action_aboot_register();
@@ -76,26 +99,6 @@ enum lk2nd_boot_aboot_action lk2nd_boot_do_action()
 	return LK2ND_ABOOT_ACTION_FASTBOOT;
 }
 
-static void dump_devices()
-{
-	struct bdev_struct *bdevs = bio_get_bdevs();
-	bdev_t *entry;
-
-	dprintf(INFO, "block devices:\n");
-	mutex_acquire(&bdevs->lock);
-	dprintf(INFO, " | dev    | label      | size       | Sub |\n");
-	list_for_every_entry(&bdevs->list, entry, bdev_t, node) {
-		dprintf(INFO, " | %-6s | %-10s | %6lld %s | %-3s |\n",
-			entry->name,
-			(entry->label ? entry->label : ""),
-			entry->size / (entry->size > 1024 * 1024 ? 1024*1024 : 1024),
-			(entry->size > 1024 * 1024 ? "MiB" : "KiB"),
-			(entry->is_subdev ? "Yes" : "")
-			);
-	}
-	mutex_release(&bdevs->lock);
-}
-
 /**
  * lk2nd_boot_init() - Prepare lk2nd boot.
  *
@@ -106,5 +109,5 @@ void lk2nd_boot_init()
 {
 	dprintf(INFO, "boot: Init\n");
 	list_initialize(&actions_list);
-	dump_devices();
+	lk2nd_boot_dump_devices();
 }
