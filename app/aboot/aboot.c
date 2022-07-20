@@ -100,6 +100,10 @@
 #include <lk2nd/device.h>
 #endif
 
+#if WITH_LK2ND_BOOT
+#include <lk2nd/boot.h>
+#endif
+
 extern  bool target_use_signed_kernel(void);
 extern void platform_uninit(void);
 extern void target_uninit(void);
@@ -5513,6 +5517,9 @@ void aboot_init(const struct app_descriptor *app)
 	lk2nd_device_init();
 #endif
 
+#if WITH_LK2ND_BOOT
+	lk2nd_boot_init();
+#endif
 	/*
 	 * Check power off reason if user force reset,
 	 * if yes phone will do normal boot.

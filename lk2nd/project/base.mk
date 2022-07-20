@@ -18,6 +18,7 @@ MODULES += \
 	lk2nd \
 	lk2nd/fastboot \
 	lk2nd/mac \
+	lk2nd/boot \
 
 ifeq ($(ENABLE_DISPLAY), 1)
 ifneq ($(LK2ND_DISPLAY),)
