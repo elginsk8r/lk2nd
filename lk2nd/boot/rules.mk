@@ -8,3 +8,4 @@ MODULES += \
 
 OBJS += \
 	$(LOCAL_DIR)/boot.o \
+	$(LOCAL_DIR)/aboot.o \
