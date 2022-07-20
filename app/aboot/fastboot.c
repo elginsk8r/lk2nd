@@ -390,8 +390,10 @@ void fastboot_ack(const char *code, const char *reason)
 {
 	STACKBUF_DMA_ALIGN(response, MAX_RSP_SIZE);
 
-	if (fastboot_state != STATE_COMMAND)
+	if (fastboot_state != STATE_COMMAND) {
+		dprintf(INFO, "%s\n", reason);
 		return;
+	}
 
 	if (reason == 0)
 		reason = "";
@@ -407,8 +409,10 @@ void fastboot_info(const char *reason)
 {
 	STACKBUF_DMA_ALIGN(response, MAX_RSP_SIZE);
 
-	if (fastboot_state != STATE_COMMAND)
+	if (fastboot_state != STATE_COMMAND) {
+		dprintf(INFO, "%s\n", reason);
 		return;
+	}
 
 	if (reason == 0)
 		return;
@@ -773,5 +777,8 @@ fail_alloc_in:
 
 void fastboot_stop(void)
 {
+	if (fastboot_state != STATE_COMMAND)
+		return;
+
 	usb_if.udc_stop();
 }
