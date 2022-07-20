@@ -17,11 +17,8 @@ struct list_node actions_list;
 /**
  * lk2nd_boot_add_action() - Register a new boot action.
  */
-void lk2nd_boot_add_action(
-		char *name,
-		int priority,
-		enum lk2nd_boot_aboot_action (*action)(void *data),
-		void *data)
+void lk2nd_boot_add_action( char *name,	int priority,
+		enum lk2nd_boot_aboot_action (*action)(void *data), void *data)
 {
 	struct lk2nd_boot_action *act = malloc(sizeof(*act));
 	strncpy(act->name, name, LK2ND_BOOT_MAX_NAME_LEN-1);
