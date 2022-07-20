@@ -58,7 +58,7 @@
 
 #define CENTER_IMAGE_ON_X_AXIS(image_width,screen_width)         (((screen_width)-(image_width))/2)
 
-extern uint32_t target_volume_up();
+extern int target_volume_up();
 extern uint32_t target_volume_down();
 extern int msm_display_on();
 
