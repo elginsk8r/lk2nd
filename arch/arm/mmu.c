@@ -85,6 +85,9 @@ void arm_mmu_init(void)
 
 	platform_init_mmu_mappings();
 
+	/* Make sure LPAE (TTBCR.EAE, bit 31) is disabled */
+	arm_write_ttbcr(0);
+
 	/* set up the translation table base */
 	arm_write_ttbr((uint32_t)tt);
 
