@@ -154,6 +154,11 @@ __WEAK void target_load_ssd_keystore(void)
 {
 }
 
+__WEAK int target_volume_up()
+{
+	return 0;
+}
+
 /* Default target does not support continuous splash screen feature. */
 __WEAK int target_cont_splash_screen()
 {
