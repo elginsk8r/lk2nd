@@ -144,15 +144,19 @@ partition_activate_slot(int slot)
 	return;
 }
 
-void partition_reset_retry_count(int slot)
+void partition_set_successful(int slot)
 {
 	struct partition_entry *partition_entries =
 			partition_get_partition_entries();
 	int slt_index = boot_slot_index[slot];
 
-	/* Set Max retry count and priority value */
-	partition_entries[slt_index].attribute_flag |= (PART_ATT_PRIORITY_VAL |
-							PART_ATT_MAX_RETRY_COUNT_VAL);
+	/* Set Success bit */
+	SET_BIT(partition_entries[slt_index].attribute_flag, PART_ATT_SUCCESS_BIT);
+
+	attributes_updated = true;
+
+	/* Make attributes persistant */
+	partition_mark_active_slot(active_slot);
 
 	return;
 }

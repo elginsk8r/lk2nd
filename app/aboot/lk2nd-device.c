@@ -411,10 +411,10 @@ static void lk2nd_handle_multislot(void)
 
 	if (strcmp(lk2nd_dev.slot_suffix, "_a") == 0) {
 		dprintf(INFO, "Marking Slot A as successful.\n");
-		partition_reset_retry_count(SLOT_A);
+		partition_set_successful(SLOT_A);
 	} else if (strcmp(lk2nd_dev.slot_suffix, "_b") == 0) {
 		dprintf(INFO, "Marking Slot B as successful.\n");
-		partition_reset_retry_count(SLOT_B);
+		partition_set_successful(SLOT_B);
 	} else {
 		dprintf(CRITICAL, "ERROR: Couldn't determine slot suffix of %s\n", lk2nd_dev.slot_suffix);
 	}
