@@ -1672,6 +1672,16 @@ int boot_linux_from_mmc(void)
                 return -1;
 	}
 
+	/* If lk2nd is installed on the mmc's boot partition,
+	 * the device would repeat booting into lk2nd forever.
+	 * Prevent this to happen.
+	*/
+	char *hdr_cmdline_lk2nd_pos = strstr((const char *)hdr->cmdline, "lk2nd");
+	if (hdr_cmdline_lk2nd_pos && *(hdr_cmdline_lk2nd_pos + strlen("lk2nd")) == '\0') {
+		dprintf(CRITICAL, "ERROR: lk2nd detected on partition %s\n", ptn_name);
+		return ERR_REPEAT_BOOT_LK2ND;
+	}
+
 	if (memcmp(hdr->magic, BOOT_MAGIC, BOOT_MAGIC_SIZE)) {
 		dprintf(CRITICAL, "ERROR: Invalid boot image header\n");
                 return ERR_INVALID_BOOT_MAGIC;
@@ -5693,6 +5703,7 @@ retry_boot:
 				case ERR_DT_PARSE:
 				case ERR_ABOOT_ADDR_OVERLAP:
 				case ERR_INVALID_BOOT_MAGIC:
+				case ERR_REPEAT_BOOT_LK2ND:
 					if(partition_multislot_is_supported())
 					{
 						/*
