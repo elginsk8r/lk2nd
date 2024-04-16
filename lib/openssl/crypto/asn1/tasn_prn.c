@@ -446,11 +446,11 @@ static int asn1_print_fsname(BIO *out, int indent,
 	return 1;
 	}
 
-static int asn1_print_boolean_ctx(BIO *out, const int bool,
+static int asn1_print_boolean_ctx(BIO *out, const int value,
 							const ASN1_PCTX *pctx)
 	{
 	const char *str;
-	switch (bool)
+	switch (value)
 		{
 		case -1:
 		str = "BOOL ABSENT";
@@ -574,10 +574,10 @@ static int asn1_primitive_print(BIO *out, ASN1_VALUE **fld,
 		{
 		case V_ASN1_BOOLEAN:
 			{
-			int bool = *(int *)fld;
-			if (bool == -1)
-				bool = it->size;
-			ret = asn1_print_boolean_ctx(out, bool, pctx);
+			int value = *(int *)fld;
+			if (value == -1)
+				value = it->size;
+			ret = asn1_print_boolean_ctx(out, value, pctx);
 			}
 		break;
 
