@@ -23,6 +23,8 @@
 
 		lk2nd,dtb-files = "msm8916-samsung-gt58";
 
+		lk2nd,boot-partition = "hidden";
+
 		qcom,msm-id = <QCOM_ID_APQ8016 0>;
 		qcom,board-id = <0xF708FF01 2>;
 
@@ -74,6 +76,8 @@
 		lk2nd,match-bootloader = "T550*";
 
 		lk2nd,dtb-files = "msm8916-samsung-gt510";
+
+		lk2nd,boot-partition = "hidden";
 
 		qcom,msm-id = <QCOM_ID_APQ8016 0>;
 		qcom,board-id = <0xF708FF01 7>;
