@@ -29,6 +29,10 @@
 
 		lk2nd,dtb-files = "msm8916-samsung-gt58";
 
+		lk2nd,android-partition-boot = "hidden";
+		lk2nd,android-partition-misc = "fota";
+		lk2nd,android-recovery-is-boot;
+
 		qcom,msm-id = <QCOM_ID_MSM8916 0>;
 		qcom,board-id = <0xCE08FF01 0>;
 
@@ -150,6 +154,10 @@
 		lk2nd,match-bootloader = "T355*";
 
 		lk2nd,dtb-files = "msm8916-samsung-gt58";
+
+		lk2nd,android-partition-boot = "hidden";
+		lk2nd,android-partition-misc = "fota";
+		lk2nd,android-recovery-is-boot;
 
 		qcom,msm-id = <QCOM_ID_MSM8916 0>;
 		qcom,board-id = <0xCE08FF01 1>;
@@ -858,6 +866,10 @@
 
 		lk2nd,dtb-files = "msm8916-samsung-gt58";
 
+		lk2nd,android-partition-boot = "hidden";
+		lk2nd,android-partition-misc = "fota";
+		lk2nd,android-recovery-is-boot;
+
 		qcom,msm-id = <QCOM_ID_MSM8916 0>;
 		qcom,board-id = <0xCE08FF01 6>;
 
@@ -890,6 +902,10 @@
 		lk2nd,match-bootloader = "T555*";
 
 		lk2nd,dtb-files = "msm8916-samsung-gt510";
+
+		lk2nd,android-partition-boot = "hidden";
+		lk2nd,android-partition-misc = "fota";
+		lk2nd,android-recovery-is-boot;
 
 		qcom,msm-id = <QCOM_ID_MSM8916 0>;
 		qcom,board-id = <0xCE08FF01 7>;
