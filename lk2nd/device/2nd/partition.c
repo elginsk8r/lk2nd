@@ -9,6 +9,7 @@
 #include <target.h>
 
 #include <lk2nd/init.h>
+#include "device.h"
 
 static void partition_split_mmc(const char *base_name, const char *name,
 				uint32_t num_blocks, bool end)
@@ -50,6 +51,21 @@ static void partition_split_mmc(const char *base_name, const char *name,
 	base->size -= num_blocks;
 }
 
+static void partition_rename_mmc(const char *base_name, const char *name)
+{
+	struct partition_entry *base;
+	int index = partition_get_index(base_name);
+
+	if (index == INVALID_PTN) {
+		dprintf(CRITICAL, "%s partition not found (as base for %s)\n",
+			base_name, name);
+		return;
+	}
+	base = &partition_get_partition_entries()[index];
+
+	strlcpy((char*)base->name, name, sizeof(base->name));
+}
+
 static void partition_split_flash(struct ptable *ptable, const char *base_name,
 				  const char *name, unsigned length, bool end)
 {
@@ -89,8 +105,13 @@ static void lk2nd_partition_split_mmc(void)
 	uint32_t block_size __UNUSED = mmc_get_device_blocksize();
 
 #ifdef LK2ND_PARTITION_SIZE
-	partition_split_mmc(LK2ND_PARTITION_BASE, LK2ND_PARTITION_NAME,
-			    LK2ND_PARTITION_SIZE / block_size, false);
+	if (lk2nd_dev.boot_parition) {
+		partition_rename_mmc(LK2ND_PARTITION_BASE, LK2ND_PARTITION_NAME);
+		partition_rename_mmc(lk2nd_dev.boot_parition, LK2ND_PARTITION_BASE);
+	} else {
+		partition_split_mmc(LK2ND_PARTITION_BASE, LK2ND_PARTITION_NAME,
+					LK2ND_PARTITION_SIZE / block_size, false);
+	}
 #endif
 }
 

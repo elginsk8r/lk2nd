@@ -134,6 +134,10 @@ static void parse_dtb(const void *dtb)
 	if (val && len > 0)
 		lk2nd_dev.menu_keys.select = strndup(val, len);
 
+	val = fdt_getprop(dtb, node, "lk2nd,boot-partition", &len);
+	if (val && len > 0)
+		lk2nd_dev.boot_parition = strndup(val, len);
+
 	dprintf(INFO, "Detected device: %s (compatible: %s)\n",
 		lk2nd_dev.model, lk2nd_dev.compatible);
 
@@ -212,5 +216,10 @@ static void lk2nd_device_fastboot_register(void)
 		fastboot_publish("lk2nd:battery", lk2nd_dev.battery);
 	if (lk2nd_dev.panel.name)
 		fastboot_publish("lk2nd:panel", lk2nd_dev.panel.name);
+#if WITH_LK2ND_DEVICE_2ND
+	if (lk2nd_dev.boot_parition)
+		fastboot_publish("lk2nd:boot", lk2nd_dev.boot_parition);
+#endif
+
 }
 FASTBOOT_INIT(lk2nd_device_fastboot_register);
