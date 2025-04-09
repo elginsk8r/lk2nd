@@ -149,6 +149,22 @@ static void parse_dtb(const void *dtb)
 	if (val && len > 0)
 		lk2nd_dev.menu_keys.select = strndup(val, len);
 
+	val = fdt_getprop(dtb, node, "lk2nd,android-partition-boot", &len);
+	if (val && len > 0)
+		lk2nd_dev.android_partitions.boot = strndup(val, len);
+
+	val = fdt_getprop(dtb, node, "lk2nd,android-partition-recovery", &len);
+	if (val && len > 0)
+		lk2nd_dev.android_partitions.recovery = strndup(val, len);
+
+	val = fdt_getprop(dtb, node, "lk2nd,android-partition-misc", &len);
+	if (val && len > 0)
+		lk2nd_dev.android_partitions.misc = strndup(val, len);
+
+	val = fdt_getprop(dtb, node, "lk2nd,android-recovery-is-boot", &len);
+	if (len >= 0)
+		lk2nd_dev.android_partitions.recovery_is_boot = true;
+
 	dprintf(INFO, "Detected device: %s (compatible: %s)\n",
 		lk2nd_dev.model, lk2nd_dev.compatible);
 
@@ -230,5 +246,6 @@ static void lk2nd_device_fastboot_register(void)
 		fastboot_publish("lk2nd:battery", lk2nd_dev.battery);
 	if (lk2nd_dev.panel.name)
 		fastboot_publish("lk2nd:panel", lk2nd_dev.panel.name);
+
 }
 FASTBOOT_INIT(lk2nd_device_fastboot_register);

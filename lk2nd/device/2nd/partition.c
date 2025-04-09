@@ -9,6 +9,7 @@
 #include <target.h>
 
 #include <lk2nd/init.h>
+#include "device.h"
 
 static void partition_split_mmc(const char *base_name, const char *name,
 				uint32_t num_blocks, bool end)
@@ -59,6 +60,21 @@ static void partition_split_mmc(const char *base_name, const char *name,
 	base->size -= num_blocks;
 }
 
+static void partition_rename_mmc(const char *base_name, const char *name)
+{
+	struct partition_entry *base;
+	int index = partition_get_index(base_name);
+
+	if (index == INVALID_PTN) {
+		dprintf(CRITICAL, "%s partition not found (as base for %s)\n",
+			base_name, name);
+		return;
+	}
+	base = &partition_get_partition_entries()[index];
+
+	strlcpy((char*)base->name, name, sizeof(base->name));
+}
+
 static void partition_split_flash(struct ptable *ptable, const char *base_name,
 				  const char *name, unsigned length, bool end)
 {
@@ -80,7 +96,7 @@ static void partition_split_flash(struct ptable *ptable, const char *base_name,
 		char backup_name[MAX_PTENTRY_NAME];
 		snprintf(backup_name, sizeof(backup_name), "real_%s", base_name);
 		ptable_add(ptable, backup_name, base->start, base->length,
-			    base->flags, base->type, base->perm);
+				base->flags, base->type, base->perm);
 	} else {
 		dprintf(CRITICAL, "Too many partitions, cannot backup %s partition entry\n",
 			base_name);
@@ -107,16 +123,30 @@ static void lk2nd_partition_split_mmc(void)
 {
 	uint32_t block_size __UNUSED = mmc_get_device_blocksize();
 
-#ifdef LK2ND_BOOT_PARTITION_SIZE
-	partition_split_mmc(LK2ND_BOOT_PARTITION_BASE,
-			    LK2ND_BOOT_PARTITION_NAME,
-			    LK2ND_BOOT_PARTITION_SIZE / block_size, false);
-#endif
-#ifdef LK2ND_RECOVERY_PARTITION_SIZE
-	partition_split_mmc(LK2ND_RECOVERY_PARTITION_BASE,
-			    LK2ND_RECOVERY_PARTITION_NAME,
-			    LK2ND_RECOVERY_PARTITION_SIZE / block_size, false);
-#endif
+	bool use_alt_boot = lk2nd_dev.android_partitions.boot;
+	if (lk2nd_dev.android_partitions.boot) {
+		partition_rename_mmc(LK2ND_BOOT_PARTITION_BASE, LK2ND_BOOT_PARTITION_NAME);
+		partition_rename_mmc(lk2nd_dev.android_partitions.boot, LK2ND_BOOT_PARTITION_BASE);
+	} else if (LK2ND_BOOT_PARTITION_SIZE > 0) {
+		partition_split_mmc(LK2ND_BOOT_PARTITION_BASE,
+					LK2ND_BOOT_PARTITION_NAME,
+					LK2ND_BOOT_PARTITION_SIZE / block_size, false);
+	}
+
+	if (lk2nd_dev.android_partitions.recovery || lk2nd_dev.android_partitions.recovery_is_boot) {
+		partition_rename_mmc(LK2ND_RECOVERY_PARTITION_BASE, LK2ND_RECOVERY_PARTITION_NAME);
+		if (lk2nd_dev.android_partitions.recovery) {
+			partition_rename_mmc(lk2nd_dev.android_partitions.recovery, LK2ND_RECOVERY_PARTITION_BASE);
+		}
+	} else if (LK2ND_RECOVERY_PARTITION_SIZE > 0) {
+		partition_split_mmc(LK2ND_RECOVERY_PARTITION_BASE,
+					LK2ND_RECOVERY_PARTITION_NAME,
+					LK2ND_RECOVERY_PARTITION_SIZE / block_size, false);
+	}
+
+	if (lk2nd_dev.android_partitions.misc) {
+		partition_rename_mmc(lk2nd_dev.android_partitions.misc, "misc");
+	}
 }
 
 static void lk2nd_partition_split_flash(void)
@@ -127,16 +157,17 @@ static void lk2nd_partition_split_flash(void)
 	if (!ptable)
 		return;
 
-#ifdef LK2ND_BOOT_PARTITION_SIZE
-	partition_split_flash(ptable, LK2ND_BOOT_PARTITION_BASE,
-			      LK2ND_BOOT_PARTITION_NAME,
-			      LK2ND_BOOT_PARTITION_SIZE / block_size, false);
-#endif
-#ifdef LK2ND_RECOVERY_PARTITION_SIZE
-	partition_split_flash(ptable, LK2ND_RECOVERY_PARTITION_BASE,
-			      LK2ND_RECOVERY_PARTITION_NAME,
-			      LK2ND_RECOVERY_PARTITION_SIZE / block_size, false);
-#endif
+	if (LK2ND_BOOT_PARTITION_SIZE > 0) {
+		partition_split_flash(ptable, LK2ND_BOOT_PARTITION_BASE,
+					  LK2ND_BOOT_PARTITION_NAME,
+					  LK2ND_BOOT_PARTITION_SIZE / block_size, false);
+	}
+
+	if (LK2ND_RECOVERY_PARTITION_SIZE > 0) {
+		partition_split_flash(ptable, LK2ND_RECOVERY_PARTITION_BASE,
+					  LK2ND_RECOVERY_PARTITION_NAME,
+					  LK2ND_RECOVERY_PARTITION_SIZE / block_size, false);
+	}
 }
 
 static void lk2nd_device2nd_partition_split(void)
