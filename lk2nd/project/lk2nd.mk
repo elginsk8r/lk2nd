@@ -13,9 +13,11 @@ endif
 
 # Use part of the "boot" and "recovery" partition for the lk2nd boot image.
 # The real Android boot image can be placed in the partition with 512 KiB offset.
+LK2ND_BOOT_PARTITION_ALT ?= real_boot
 LK2ND_BOOT_PARTITION_BASE ?= boot
 LK2ND_BOOT_PARTITION_NAME ?= lk2nd
 LK2ND_BOOT_PARTITION_SIZE ?= 512*1024
+LK2ND_RECOVERY_PARTITION_ALT ?= real_recovery
 LK2ND_RECOVERY_PARTITION_BASE ?= recovery
 LK2ND_RECOVERY_PARTITION_NAME ?= lk2nd_recovery
 LK2ND_RECOVERY_PARTITION_SIZE ?= 512*1024

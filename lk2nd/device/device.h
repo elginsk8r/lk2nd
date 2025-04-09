@@ -22,6 +22,13 @@ struct lk2nd_menu_keys {
 	const char *select;
 };
 
+struct lk2nd_android_partitions {
+	const char *boot;
+	const char *recovery;
+	const char *misc;
+	bool recovery_is_boot;
+};
+
 struct lk2nd_device {
 	const void *dtb;
 
@@ -42,6 +49,7 @@ struct lk2nd_device {
 	const char *device;
 	const char *carrier;
 	const char *radio;
+	struct lk2nd_android_partitions android_partitions;
 #endif
 };
 extern struct lk2nd_device lk2nd_dev;

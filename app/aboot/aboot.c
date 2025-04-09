@@ -1578,7 +1578,7 @@ void get_recovery_dtbo_info(uint32_t *dtbo_size, void **dtbo_buf)
 
 bool detect_android_from_mmc(void)
 {
-	char *ptn_names[] = {"boot", "real_boot"};
+	char *ptn_names[] = {"boot", LK2ND_BOOT_PARTITION_ALT};
 	unsigned int i;
 	int index = INVALID_PTN;
 	unsigned long long ptn = 0;
@@ -1733,9 +1733,9 @@ retry_boot:
 		if (!try_alternate_partition) {
 			try_alternate_partition = true;
 			if (strcmp(ptn_name, "boot") == 0) {
-				ptn_name = "real_boot";
+				ptn_name = LK2ND_BOOT_PARTITION_ALT;
 			} else if (strcmp(ptn_name, "recovery") == 0) {
-				ptn_name = "real_recovery";
+				ptn_name = LK2ND_RECOVERY_PARTITION_ALT;
 			} else {
 				dprintf(CRITICAL, "No alternate partition for %s, Abort.\n", ptn_name);
 				return ERR_INVALID_BOOT_MAGIC;
