@@ -1647,14 +1647,21 @@ int boot_linux_from_mmc(void)
 		goto unified_boot;
 	}
 
+	/* Allow devices to override using the recovery partition. */
+	bool recovery_is_boot = false;
+#if WITH_LK2ND_DEVICE_2ND
+	recovery_is_boot = lk2nd_device_recovery_is_boot();
+#endif
+
 	/* For a/b recovery image code is on boot partition.
 	   If we support multislot, always use boot partition. */
-	if (boot_into_recovery &&
-		((!partition_multislot_is_supported()) ||
-		(target_dynamic_partition_supported())))
-			ptn_name = "recovery";
-	else
-			ptn_name = "boot";
+	bool recovery_available = (!partition_multislot_is_supported()
+		|| target_dynamic_partition_supported()) && !recovery_is_boot;
+	if (boot_into_recovery && recovery_available) {
+		ptn_name = "recovery";
+	} else {
+		ptn_name = "boot";
+	}
 
 	index = partition_get_index(ptn_name);
 	ptn = partition_get_offset(index);

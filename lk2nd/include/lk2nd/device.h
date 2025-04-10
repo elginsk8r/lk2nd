@@ -5,6 +5,7 @@
 #include <boot.h>
 
 unsigned char *lk2nd_device_update_cmdline(const char *cmdline, enum boot_type boot_type);
+bool lk2nd_device_recovery_is_boot(void);
 
 bool lk2nd_device2nd_have_atags(void) __PURE;
 void lk2nd_device2nd_copy_atags(void *tags, const char *cmdline,

@@ -138,6 +138,10 @@ static void parse_dtb(const void *dtb)
 	if (val && len > 0)
 		lk2nd_dev.boot_parition = strndup(val, len);
 
+	val = fdt_getprop(dtb, node, "lk2nd,recovery-is-boot", &len);
+	if (len >= 0)
+		lk2nd_dev.recovery_is_boot = true;
+
 	dprintf(INFO, "Detected device: %s (compatible: %s)\n",
 		lk2nd_dev.model, lk2nd_dev.compatible);
 
@@ -204,6 +208,11 @@ unsigned char *lk2nd_device_update_cmdline(const char *cmdline, enum boot_type b
 		return concat_cmdline(cmdline, lk2nd_dev.cmdline);
 #endif
 	return update_cmdline(cmdline);
+}
+
+bool lk2nd_device_recovery_is_boot(void)
+{
+	return lk2nd_dev.recovery_is_boot;
 }
 
 static void lk2nd_device_fastboot_register(void)

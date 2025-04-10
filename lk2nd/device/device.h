@@ -43,6 +43,7 @@ struct lk2nd_device {
 	const char *carrier;
 	const char *radio;
 	const char *boot_parition;
+	bool recovery_is_boot;
 #endif
 };
 extern struct lk2nd_device lk2nd_dev;
